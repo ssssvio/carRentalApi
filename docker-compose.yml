@@ -1,0 +1,38 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: carrentaldb
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=4DbConec+tion@
+    ports:
+      - '1433:1433'
+    volumes:
+      - ./src/config/create-database/create-database.sql:/tmp/create-database.sql
+      - sqlvolume:/var/opt/mssql
+
+  init-db:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: car-rental-tools
+    depends_on:
+      - sqlserver
+    entrypoint: ["/bin/bash", "-c", "sleep 30s && /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P 4DbConec+tion@ -i /tmp/create-database.sql || exit 1"]
+    volumes:
+      - ./src/config/create-database/create-database.sql:/tmp/create-database.sql
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: car-rental
+    restart: always
+    ports:
+      - '3000:3000'
+    depends_on:
+      - sqlserver
+    env_file:
+      - .env
+
+volumes:
+  sqlvolume:
