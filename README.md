@@ -1,5 +1,3 @@
-Claro! Aqui está o texto todo em inglês em um único bloco para você copiar:
-
 <p align="center">
   <a href="http://nestjs.com/" target="blank"
     ><img
