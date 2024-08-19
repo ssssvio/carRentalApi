@@ -11,7 +11,7 @@ export class UserRepository {
     private readonly userRepository: Repository<Users>
   ) { }
 
-  create(data: UserDTO): ResultCreateUser {
+  create(data: UserDTO): Users {
     return this.userRepository.create(data);
   }
 

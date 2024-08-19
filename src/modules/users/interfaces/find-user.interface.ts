@@ -1,9 +1,10 @@
-import { ResultUser } from '../dto/result-user.dto';
+import { ResultCreateUser } from "../dto/result-user.dto";
+import { Users } from "../entities/users.entity";
 
 export interface IFindAllUsersUsecase {
-  execute(): Promise<ResultUser[]>;
+  execute(): Promise<ResultCreateUser[]>;
 };
 
 export interface IFindUserUsecase {
-  executeById(id: number): Promise<ResultUser>;
+  executeById(id: number): Promise<Users>;
 };

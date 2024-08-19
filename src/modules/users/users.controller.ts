@@ -3,19 +3,20 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags, ApiParam, ApiBody } 
 import { UserDTO } from './dto/user-dto';
 import { TrimPipe } from 'src/common/pipes/trim-pipes';
 import { JwtAuthGuard } from 'src/common/auth/jwt-auth.guard';
+import { UsersService } from './users.service';
 
 @ApiTags('users')
 @Controller('users')
 @ApiBearerAuth()
 export class UsersController {
-  constructor(private readonly service: User) { }
+  constructor(private readonly service: UsersService) { }
 
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Retrieve all users' })
   @ApiResponse({ status: 200, description: 'List of users', type: [UserDTO] })
   async findAll() {
-    return this.findUserService.findAll();
+    return this.service.findAllUsers();
   };
 
   @Get(':id')
@@ -24,7 +25,7 @@ export class UsersController {
   @ApiResponse({ status: 200, description: 'User details', type: UserDTO })
   @ApiParam({ name: 'id', description: 'User ID', type: Number })
   async findOneUnique(@Param('id') id: number) {
-    return this.findUserService.findOneUnique(id);
+    return this.service.findOneUser(id);
   };
 
   @Post()
@@ -33,7 +34,7 @@ export class UsersController {
   @ApiResponse({ status: 201, description: 'User successfully created', type: UserDTO })
   @ApiBody({ type: UserDTO })
   async create(@Body() createUserDTO: UserDTO) {
-    return this.createUserService.create(createUserDTO);
+    return this.service.createUser(createUserDTO);
   };
 
   @Put(':id')
@@ -45,7 +46,7 @@ export class UsersController {
   @ApiParam({ name: 'id', description: 'User ID', type: Number })
   @ApiBody({ type: UserDTO })
   async update(@Param('id') id: number, @Body() updateUserDTO: UserDTO) {
-    return this.updateUserService.update(id, updateUserDTO);
+    return this.service.updateUser(id, updateUserDTO);
   };
 
   @Delete(':id')
@@ -55,6 +56,6 @@ export class UsersController {
   @ApiResponse({ status: 204, description: 'User successfully deleted' })
   @ApiParam({ name: 'id', description: 'User ID', type: Number })
   async remove(@Param('id') id: number) {
-    return this.deleteUserService.remove(id);
+    return this.service.deleteUser(id);
   };
 };

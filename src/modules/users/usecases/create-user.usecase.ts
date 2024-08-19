@@ -1,13 +1,13 @@
 import * as bcryptjs from 'bcryptjs';
 import { UserDTO } from '../dto/user-dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ICreateUserUsecase } from '../interfaces/create-user.interface';
+import { ICreateUserUseCase } from '../interfaces/create-user.interface';
 import { UserRepository } from '../users.repository';
 import { FindUsersService } from '../finders/find-users.service';
 import { ResultCreateUser } from '../dto/result-user.dto';
 
 @Injectable()
-export class PostUserUseCase implements ICreateUserUsecase {
+export class PostUserUseCase implements ICreateUserUseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly findUserService: FindUsersService

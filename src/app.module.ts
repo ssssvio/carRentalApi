@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { CarsModule } from './cars/cars.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfig } from './config/typeorm.factory';
+import { CarsModule } from './modules/cars';
 import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './modules/users';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './common/auth/auth.module';
+import { TypeOrmConfig } from './infra/config/typeorm.factory';
 
 @Module({
   imports: [
@@ -14,8 +14,8 @@ import { AuthModule } from './common/auth/auth.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfig
     }),
-    CarsModule,
     UsersModule,
+    CarsModule,
     AuthModule
   ],
   controllers: [],
