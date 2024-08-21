@@ -10,19 +10,8 @@ services:
       - '1433:1433'
     volumes:
       - sqlvolume:/var/opt/mssql
-
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: car-rental
-    restart: always
-    ports:
-      - '3000:3000'
-    depends_on:
-      - sqlserver
-    env_file:
-      - .env
+      - ./src/infra/config/create-database/init.sql:/var/opt/mssql/init.sql
+    command: /bin/bash -c "/opt/mssql/bin/sqlservr & sleep 30s & /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 4DbConec+tion@ -d master -i /var/opt/mssql/init.sql"
 
 volumes:
   sqlvolume:

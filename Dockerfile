@@ -1,5 +1,7 @@
 FROM node:18-alpine
 
+COPY src/infra/config/create-database/init.sql /docker-entrypoint-initdb.d/
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
