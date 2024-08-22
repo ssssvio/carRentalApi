@@ -20,6 +20,7 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       retryAttempts: 10,
       retryDelay: 60000,
       migrations: [__dirname + '/migrations/*{.ts,.js}'],
+      migrationsRun: true,
       subscribers: [],
       extra: {
         trustServerCertificate: true,

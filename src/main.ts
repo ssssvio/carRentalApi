@@ -5,7 +5,6 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { TrimPipe } from './common/pipes/trim-pipes';
 import { AllExceptionsFilter } from './common/filter/all-exceptions.filter';
-import { AppDataSource } from './infra/typeorm/ormconfig';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

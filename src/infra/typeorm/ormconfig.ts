@@ -14,6 +14,7 @@ export const AppDataSource = new DataSource({
   logging: true,
   entities: [Cars, Users],
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
+  migrationsRun: true,
   subscribers: [],
   extra: {
     trustServerCertificate: true,
