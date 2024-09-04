@@ -13,24 +13,22 @@ export class UpdateUserUseCase implements IUpdateUserUsecase {
   ) { }
 
   async execute(id: number, data: UserDTO): Promise<void> {
-    const user = await this.usersRepository.findOne(id);
-    if (!user) {
+    const { name, email, password } = data;
+    const userExists = await this.usersRepository.findOne(id);
+
+    if (!userExists) {
       throw new NotFoundException(`User #${id} not found!`);
     }
 
-    const hashedPassword = await bcryptjs.hash(data.password, 10);
-    const newUserData = { password: hashedPassword, ...data, id };
-
-    if (JSON.stringify(user) === JSON.stringify(newUserData)) {
-      return;
-    }
-
-    if (data.email) {
-      const userWithSameEmail = await this.findUserService.findOneByEmail(data.email);
+    if (email) {
+      const userWithSameEmail = await this.findUserService.findOneByEmail(email);
       if (userWithSameEmail && userWithSameEmail.id !== id) {
-        throw new BadRequestException(`User with email ${data.email} already exists!`);
+        throw new BadRequestException(`User with email ${email} already exists!`);
       }
     }
+
+    const hashedPassword = await bcryptjs.hash(password, 10);
+    const newUserData = { id, name, email, password: hashedPassword };
 
     await this.usersRepository.save(newUserData);
   }
