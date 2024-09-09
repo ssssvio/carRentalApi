@@ -1,8 +1,8 @@
 import 'dotenv/config';
-import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Cars } from 'src/modules/cars/entities/cars.entity';
 import { Users } from 'src/modules/users/entities/users.entity';
+import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 @Injectable()
 export class TypeOrmConfig implements TypeOrmOptionsFactory {
@@ -15,7 +15,7 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       password: process.env.TYPEORM_PASSWORD,
       database: process.env.TYPEORM_DATABASE,
       synchronize: false,
-      logging: true,
+      logging: false,
       entities: [Cars, Users],
       retryAttempts: 10,
       retryDelay: 60000,
