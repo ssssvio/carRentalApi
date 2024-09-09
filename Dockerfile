@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run typeorm migration:run && npm run start:prod
+RUN npm run build
 
 EXPOSE 3000
 

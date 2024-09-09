@@ -4,7 +4,7 @@ services:
     container_name: carrentaldb
     restart: always
     environment:
-      - ACCEPT_EULA=Y
+      - ACCEPT_EULA=Y 
       - SA_PASSWORD=4DbConec+tion@
     ports:
       - '1433:1433'
@@ -17,9 +17,25 @@ services:
     container_name: car-rental-tools
     depends_on:
       - sqlserver
-    entrypoint: ["/bin/bash", "-c", "sleep 50s && /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P 4DbConec+tion@ -i /tmp/init.sql || exit 1"]
+    entrypoint: ["/bin/bash", "-c", "sleep 30s && /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P 4DbConec+tion@ -i /tmp/init.sql || exit 1"]
     volumes:
       - ./src/infra/database/init.sql:/tmp/init.sql
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: carrentalapi
+    restart: always
+    ports:
+      - '3000:3000'
+    depends_on:
+      - sqlserver
+    env_file:
+      - .env
+    entrypoint: ["/bin/sh", "-c", "npx typeorm migration:run -d dist/infra/typeorm/ormconfig"]
+    volumes:
+      - ./:/usr/src/app
 
 volumes:
   sqlvolume:
