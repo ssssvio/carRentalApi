@@ -5,21 +5,34 @@ services:
     restart: always
     environment:
       - ACCEPT_EULA=Y 
-      - SA_PASSWORD=4DbConec+tion@
+      - SA_PASSWORD=${SA_PASSWORD}
     ports:
       - '1433:1433'
     volumes:
       - ./src/infra/database/init.sql:/tmp/init.sql
       - sqlvolume:/var/opt/mssql
+    env_file:
+      - .env
 
   init-db:
     image: mcr.microsoft.com/mssql-tools
     container_name: car-rental-tools
     depends_on:
       - sqlserver
-    entrypoint: ["/bin/bash", "-c", "sleep 30s && /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P 4DbConec+tion@ -i /tmp/init.sql || exit 1"]
+    entrypoint: [ "/bin/bash", "-c", "sleep 20s && /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P ${SA_PASSWORD} -i /tmp/init.sql || exit 1"]
     volumes:
       - ./src/infra/database/init.sql:/tmp/init.sql
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: car-migrations
+    depends_on:
+      - init-db
+    entrypoint: /bin/sh -c "sleep 25s && npx typeorm migration:run -d dist/infra/typeorm/ormconfig"
+    env_file:
+      - .env
 
   api:
     build:
@@ -30,12 +43,9 @@ services:
     ports:
       - '3000:3000'
     depends_on:
-      - sqlserver
+      - migrations
     env_file:
       - .env
-    entrypoint: ["/bin/sh", "-c", "npx typeorm migration:run -d dist/infra/typeorm/ormconfig"]
-    volumes:
-      - ./:/usr/src/app
 
 volumes:
   sqlvolume:
