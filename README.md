@@ -88,9 +88,7 @@ installed on your machine:
   higher)
 - **Docker Compose** (v1.27 or higher)
 
-## Cloning the Project To start,
-
-clone the repository to your local environment:
+## Cloning the Project To start, clone the repository to your local environment:
 
 ```bash git clone
   git pull git@github.com:ssssvio/carRentalApi.git
