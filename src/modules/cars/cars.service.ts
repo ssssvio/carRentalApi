@@ -1,37 +1,40 @@
-import { CarDTO } from "./dto/car-dto";
-import { Injectable } from "@nestjs/common";
-import { Cars } from "./entities/cars.entity";
-import { GetCarUseCase } from "./usecases/find-car.usecase";
-import { PostCarUseCase } from "./usecases/create-car.usecase";
-import { DeleteCarUseCase } from "./usecases/delete-car.usecase";
-import { UpdateCarUseCase } from "./usecases/update-car.usecase";
+import { Injectable } from '@nestjs/common';
+import { CarEntity } from '../../data/cars/entities/car.entity';
+import { ICarsService } from './cars.service.interface';
+import { GetCarDto } from './dto';
+import { CarDto } from './dto/post-car-dto';
+import { DeleteCarUseCase } from './usecases/delete-car.usecase';
+import { GetCarUseCase } from './usecases/get-car.usecase';
+import { PostCarUseCase } from './usecases/post-car.usecase';
+import { PutCarUseCase } from './usecases/put-car.usecase';
 
+//DPI (Inversao de dependencias)
 @Injectable()
-export class CarsService {
+export class CarsService implements ICarsService {
   constructor(
     private readonly postCarUseCase: PostCarUseCase,
     private readonly getCarUseCase: GetCarUseCase,
     private readonly deleteCarUseCase: DeleteCarUseCase,
-    private readonly updateCarUseCase: UpdateCarUseCase,
-  ) { }
+    private readonly updateCarUseCase: PutCarUseCase,
+  ) {}
 
-  createCar(data: CarDTO): Promise<Cars> {
+  createCar(data: CarDto): Promise<CarEntity> {
     return this.postCarUseCase.execute(data);
   }
 
-  findAllCars(): Promise<Cars[]> {
-    return this.getCarUseCase.execute();
+  findCars(query: GetCarDto): Promise<CarEntity[]> {
+    return this.getCarUseCase.execute(query);
   }
 
-  findOneCar(id: number): Promise<Cars> {
+  findCarById(id: number): Promise<CarEntity> {
     return this.getCarUseCase.executeById(id);
   }
 
-  deleteCar(id: number): Promise<void> {
+  removeCar(id: number): Promise<void> {
     return this.deleteCarUseCase.execute(id);
   }
 
-  updateCar(id: number, data: CarDTO): Promise<void> {
+  updateCar(id: number, data: CarDto): Promise<void> {
     return this.updateCarUseCase.execute(id, data);
   }
-};
+}

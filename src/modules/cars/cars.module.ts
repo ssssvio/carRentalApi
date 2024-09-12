@@ -1,27 +1,31 @@
+import { CarDataModule } from '@data/cars';
 import { Module } from '@nestjs/common';
-import { CarsService } from './cars.service';
-import { Cars } from './entities/cars.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { CarRepository } from './cars.repository';
+import { CarRepository } from '../../data/cars/repositories/car.repository';
 import { CarsController } from './cars.controller';
-import { GetCarUseCase } from './usecases/find-car.usecase';
-import { PostCarUseCase } from './usecases/create-car.usecase';
-import { DeleteCarUseCase } from './usecases/delete-car.usecase';
-import { UpdateCarUseCase } from './usecases/update-car.usecase';
+import { CarsService } from './cars.service';
+import { ICarsService } from './cars.service.interface';
+import {
+  DeleteCarUseCase,
+  GetCarUseCase,
+  PostCarUseCase,
+  PutCarUseCase,
+} from './usecases';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Cars])],
+  imports: [CarDataModule],
   controllers: [CarsController],
   providers: [
     CarsService,
     GetCarUseCase,
     PostCarUseCase,
     DeleteCarUseCase,
-    UpdateCarUseCase,
-    CarRepository
+    PutCarUseCase,
+    CarRepository,
+    //Omiti a implementação do controller
+    {
+      provide: ICarsService,
+      useClass: CarsService,
+    },
   ],
-  exports: [
-    GetCarUseCase, PostCarUseCase, DeleteCarUseCase, UpdateCarUseCase, CarRepository
-  ]
 })
-export class CarsModule { }
+export class CarsModule {}

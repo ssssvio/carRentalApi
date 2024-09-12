@@ -1,8 +1,5 @@
-import 'dotenv/config';
 import { Injectable } from '@nestjs/common';
-import { Cars } from 'src/modules/cars/entities/cars.entity';
-import { Users } from 'src/modules/users/entities/users.entity';
-import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 @Injectable()
 export class TypeOrmConfig implements TypeOrmOptionsFactory {
@@ -16,9 +13,13 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       database: process.env.TYPEORM_DATABASE,
       synchronize: false,
       logging: false,
-      entities: [Cars, Users],
       retryAttempts: 10,
       retryDelay: 25000,
+      entities: [
+        //inject all entities
+        'dist/src/modules/**/entities/*.entity{.ts,.js}',
+        'dist/src/data/**/entities/*.entity{.ts,.js}',
+      ],
       migrations: [__dirname + '/migrations/*{.ts,.js}'],
       migrationsRun: true,
       subscribers: [],
@@ -26,5 +27,5 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
         trustServerCertificate: true,
       },
     };
-  };
-};
+  }
+}

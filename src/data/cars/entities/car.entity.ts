@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('cars')
-export class Cars {
-  @PrimaryGeneratedColumn()
+export class CarEntity {
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
   @Column()
@@ -22,4 +22,4 @@ export class Cars {
 
   @Column({ default: false })
   rented: boolean;
-};
+}

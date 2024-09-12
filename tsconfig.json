@@ -17,7 +17,17 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@common": ["src/common"],
+      "@common/*": ["src/common/*"],
+      "@core": ["src/core"],
+      "@core/*": ["src/core/*"],
+      "@data": ["src/data"],
+      "@data/*": ["src/data/*"],
+      "@shared": ["src/shared"],
+      "@shared/*": ["src/shared/*"]
+    }
   },
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }

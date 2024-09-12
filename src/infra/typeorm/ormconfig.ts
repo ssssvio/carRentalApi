@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Cars } from 'src/modules/cars/entities/cars.entity';
+import { CarEntity } from 'src/data/cars/entities/car.entity';
 import { Users } from 'src/modules/users/entities/users.entity';
 import { DataSource } from 'typeorm';
 
@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
   database: process.env.TYPEORM_DATABASE,
   synchronize: false,
   logging: false,
-  entities: [Cars, Users],
+  entities: [CarEntity, Users],
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
   migrationsRun: true,
   subscribers: [],
